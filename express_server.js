@@ -22,15 +22,31 @@ app.get("/urls.json", (req, res) => {
   res.json(urlDatabase);
 });
 
-// Route handler for "/urls"
+// Route handler for all "/urls"
 app.get("/urls", (req, res) => {
   // We need to send the variables to the EJS template
   // inside an object, so we can use the key of
   // the variable (urls) to access the data
   // within the template
-  const templateVars = { urls: urlDatabase };
+  const templateVars = { 
+    urls: urlDatabase 
+  };
   res.render("urls_index", templateVars);
 });
+
+// Render/ show information about a single URL
+app.get("/urls/:id", (req, res) => {
+  const id = req.params.id;
+
+    const templateVars = {
+      id,
+      longURL: urlDatabase[id],
+    };
+
+  res.render("urls_show", templateVars);
+})
+
+
 
 app.listen(PORT, () => {
   console.log(`Example app listening on port ${PORT}!`);

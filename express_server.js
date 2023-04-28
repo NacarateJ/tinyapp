@@ -28,26 +28,33 @@ app.get("/urls", (req, res) => {
   // inside an object, so we can use the key of
   // the variable (urls) to access the data
   // within the template
-  const templateVars = { 
-    urls: urlDatabase 
+  const templateVars = {
+    urls: urlDatabase
   };
   res.render("urls_index", templateVars);
 });
+
+
+// Route to show new form
+app.get("/urls/new", (req, res) => {
+  res.render("urls_new");
+})
 
 // Render/ show information about a single URL
 app.get("/urls/:id", (req, res) => {
   const id = req.params.id;
 
-    const templateVars = {
-      id,
-      longURL: urlDatabase[id],
-    };
+  const templateVars = {
+    id,
+    longURL: urlDatabase[id],
+  };
 
   res.render("urls_show", templateVars);
-})
+});
+
 
 
 
 app.listen(PORT, () => {
-  console.log(`Example app listening on port ${PORT}!`);
+  console.log(`App listening on port ${PORT}!`);
 });

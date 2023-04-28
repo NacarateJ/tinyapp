@@ -4,6 +4,21 @@ const PORT = 8080;
 
 app.set("view engine", "ejs");
 
+// Func to return 6 random alphanumeric characters
+function generateRandomString(length) {
+    let result = "";
+    const characters =
+      "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+    for (let i = 0; i < length; i++) {
+      result += characters.charAt(
+        Math.floor(Math.random() * characters.length)
+      );
+    }
+    return result;
+}
+
+generateRandomString(6);
+
 // Middleware to translate, or parse the body from the POST request
 app.use(express.urlencoded({ extended: true }));
 

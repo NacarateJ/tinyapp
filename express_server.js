@@ -72,7 +72,12 @@ app.post("/urls", (req, res) => {
 // Redirect user to the appropriate longURL site
 app.get("/u/:id", (req, res) => {
   const longURL = urlDatabase[req.params.id];
-  res.redirect(longURL);
+  // Error if the user requests a short URL with a non-existant id
+  if (!longURL) {
+    res.status(404).send("URL not found");
+  } else {
+    res.redirect(longURL);
+  }
 });
 
 

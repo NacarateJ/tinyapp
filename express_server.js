@@ -90,7 +90,6 @@ app.get("/u/:id", (req, res) => {
   }
 });
 
-
 // Render/ show information about a single URL
 app.get("/urls/:id", (req, res) => {
   const id = req.params.id;
@@ -101,6 +100,16 @@ app.get("/urls/:id", (req, res) => {
   };
 
   res.render("urls_show", templateVars);
+});
+
+// Delete URL
+app.post("/urls/:id/delete", (req, res) => {
+  const id = req.params.id;
+
+  // The delete operator removes a property from an object
+  delete urlDatabase[id];
+
+  res.redirect("/urls");
 });
 
 app.listen(PORT, () => {

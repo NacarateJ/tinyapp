@@ -1,3 +1,4 @@
+const request = require("request");
 const express = require("express");
 const app = express();
 const PORT = 8080;
@@ -59,14 +60,23 @@ app.get("/urls/new", (req, res) => {
 app.post("/urls", (req, res) => {
   const newURL = req.body.longURL;
 
-  // New id (shortURL)
-  const newID = generateRandomString(6);
+  // Check if the website exists or is accessible
+  request.get(newURL, (err, response) => {
+    if (err || response.statusCode !== 200) {
+      // If website does not exist or is not accessible,
+      // send error
+      res.send("Please provide a valid URL.");
+    } else {
+      // New id (shortURL)
+      const newID = generateRandomString(6);
 
-  // Add new id (shortURL)-longURL key-value pairs to DB
-  urlDatabase[newID] = newURL;
+      // Add new id (shortURL)-longURL key-value pairs to DB
+      urlDatabase[newID] = newURL;
 
-  // Use the NEW route to show/view the URL created
-  res.redirect(`/urls/${newID}`);
+      // Use the NEW route to show/view the URL created
+      res.redirect(`/urls/${newID}`);
+    }
+  });
 });
 
 // Redirect user to the appropriate longURL site

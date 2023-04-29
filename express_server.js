@@ -69,6 +69,12 @@ app.post("/urls", (req, res) => {
   res.redirect(`/urls/${newID}`);
 });
 
+// Redirect user to the appropriate longURL site
+app.get("/u/:id", (req, res) => {
+  const longURL = urlDatabase[req.params.id];
+  res.redirect(longURL);
+});
+
 
 // Render/ show information about a single URL
 app.get("/urls/:id", (req, res) => {

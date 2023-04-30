@@ -102,9 +102,23 @@ app.get("/urls/:id", (req, res) => {
   res.render("urls_show", templateVars);
 });
 
-// Delete URL
-app.post("/urls/:id/delete", (req, res) => {
+// Edit URL 
+app.post("/urls/:id", (req, res) => {
   const id = req.params.id;
+
+  const updatedUrl = req.body.longURL;
+  
+
+  // Update URL in DB
+  urlDatabase[id] = updatedUrl;
+
+  // Use the NEW route to show/view the URL created
+  res.redirect("/urls");
+});
+  
+  // Delete URL
+  app.post("/urls/:id/delete", (req, res) => {
+    const id = req.params.id;
 
   // The delete operator removes a property from an object
   delete urlDatabase[id];

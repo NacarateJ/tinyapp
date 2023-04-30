@@ -102,6 +102,18 @@ app.get("/urls/:id", (req, res) => {
   res.render("urls_show", templateVars);
 });
 
+// Route to login
+app.post("/login", (req, res) => {
+  const username = "username";
+  const loginValue = req.body.username;
+
+  // Set a cookie named username to the value submitted in
+  // the request body via the login form
+  res.cookie(username, loginValue);
+
+  res.redirect("/urls");
+});
+
 // Edit URL 
 app.post("/urls/:id", (req, res) => {
   const id = req.params.id;

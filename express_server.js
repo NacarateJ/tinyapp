@@ -1,5 +1,8 @@
-const request = require("request");
 const express = require("express");
+const request = require("request");
+const cookieParser = require("cookie-parser");
+
+
 const app = express();
 const PORT = 8080;
 
@@ -20,6 +23,10 @@ const generateRandomString = function(length) {
 
 // Middleware to translate, or parse the body from the POST request
 app.use(express.urlencoded({ extended: true }));
+
+// Middleware to parse the cookies sent in the request and make them
+// available in the req.cookies object
+app.use(cookieParser());
 
 // Data to show on the URLs page
 const urlDatabase = {
@@ -51,7 +58,7 @@ app.get("/urls", (req, res) => {
   res.render("urls_index", templateVars);
 });
 
-// Route to show new form
+// Route to show form for new URL
 app.get("/urls/new", (req, res) => {
   res.render("urls_new");
 });

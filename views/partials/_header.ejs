@@ -19,8 +19,8 @@
 
     <% if (username) { %>
       <div class="navbar-form">
-        <p class="navbar-text">Logged in as: <%= username %></p>
         <form method="POST" action="/logout">
+          <p class="navbar-text">Logged in as: <%= username %></p>
           <button type="submit">Logout</button>
         </form>
       </div>

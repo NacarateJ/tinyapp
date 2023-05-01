@@ -17,14 +17,19 @@
       </div>
     </div>
 
-    <div class="navbar-form">
-      <form method="POST" action="/login">
-        
+    <% if (username) { %>
+      <div class="navbar-form">
+        <p class="navbar-text">Logged in as: <%= username %></p>
+          <button type="submit">Logout</button>
+      </div>
+    <% } else { %>
+      <div class="navbar-form">
+        <form method="POST" action="/login">
           <input type="text" name="username" placeholder="Username">
-
-        <button type="submit">Login</button>
-      </form>
-    </div>
+          <button type="submit">Login</button>
+        </form>
+      </div>
+    <% } %>
 
      <button
       class="navbar-toggler"

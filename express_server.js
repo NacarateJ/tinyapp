@@ -1,12 +1,14 @@
-const request = require("request");
 const express = require("express");
+const request = require("request");
+const cookieParser = require("cookie-parser");
+
 const app = express();
 const PORT = 8080;
 
 app.set("view engine", "ejs");
 
 // Func to return 6 random alphanumeric characters
-const generateRandomString = function(length) {
+const generateRandomString = function (length) {
   let result = "";
   const characters =
     "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
@@ -20,6 +22,10 @@ const generateRandomString = function(length) {
 
 // Middleware to translate, or parse the body from the POST request
 app.use(express.urlencoded({ extended: true }));
+
+// Middleware to parse the cookies sent in the request and make them
+// available in the req.cookies object
+app.use(cookieParser());
 
 // Data to show on the URLs page
 const urlDatabase = {
@@ -46,14 +52,18 @@ app.get("/urls", (req, res) => {
   // the variable (urls) to access the data
   // within the template
   const templateVars = {
+    username: req.cookies["username"],
     urls: urlDatabase,
   };
   res.render("urls_index", templateVars);
 });
 
-// Route to show new form
+// Route to show form for new URL
 app.get("/urls/new", (req, res) => {
-  res.render("urls_new");
+  const templateVars = {
+    username: req.cookies["username"],
+  };
+  res.render("urls_new", templateVars);
 });
 
 // Route to receive form submission
@@ -95,6 +105,7 @@ app.get("/urls/:id", (req, res) => {
   const id = req.params.id;
 
   const templateVars = {
+    username: req.cookies["username"],
     id,
     longURL: urlDatabase[id],
   };
@@ -102,12 +113,33 @@ app.get("/urls/:id", (req, res) => {
   res.render("urls_show", templateVars);
 });
 
-// Edit URL 
+// Route to login
+app.post("/login", (req, res) => {
+  const username = "username";
+  const loginValue = req.body.username;
+
+  // Set a cookie named username to the value submitted in
+  // the request body via the login form
+  res.cookie(username, loginValue);
+
+  res.redirect("/urls");
+});
+
+// Rout to logout
+app.post("/logout", (req,res) => {
+  const username = "username";
+  
+  // It clears the cookie specified by name
+  res.clearCookie(username);
+
+  res.redirect("/urls");
+});
+
+// Edit URL
 app.post("/urls/:id", (req, res) => {
   const id = req.params.id;
 
   const updatedUrl = req.body.longURL;
-  
 
   // Update URL in DB
   urlDatabase[id] = updatedUrl;
@@ -115,10 +147,10 @@ app.post("/urls/:id", (req, res) => {
   // Use the NEW route to show/view the URL created
   res.redirect("/urls");
 });
-  
-  // Delete URL
-  app.post("/urls/:id/delete", (req, res) => {
-    const id = req.params.id;
+
+// Delete URL
+app.post("/urls/:id/delete", (req, res) => {
+  const id = req.params.id;
 
   // The delete operator removes a property from an object
   delete urlDatabase[id];

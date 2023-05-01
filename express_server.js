@@ -125,6 +125,16 @@ app.post("/login", (req, res) => {
   res.redirect("/urls");
 });
 
+// Rout to logout
+app.post("/logout", (req,res) => {
+  const username = "username";
+  
+  // It clears the cookie specified by name
+  res.clearCookie(username);
+
+  res.redirect("/urls");
+});
+
 // Edit URL
 app.post("/urls/:id", (req, res) => {
   const id = req.params.id;

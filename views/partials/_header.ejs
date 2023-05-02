@@ -17,17 +17,18 @@
       </div>
     </div>
 
-    <% if (username) { %>
+    <% if (user && user["email"]) { %>
       <div class="navbar-form">
         <form method="POST" action="/logout">
-          <p class="navbar-text">Logged in as: <%= username %></p>
+          <p class="navbar-text">Logged in as: <%= user["email"] %></p>
           <button type="submit">Logout</button>
         </form>
       </div>
     <% } else { %>
       <div class="navbar-form">
         <form method="POST" action="/login">
-          <input type="text" name="username" placeholder="Username">
+          <input type="email" name="email" placeholder="Email">
+           <input type="password" name="password" placeholder="Password"/>
           <button type="submit">Login</button>
         </form>
       </div>

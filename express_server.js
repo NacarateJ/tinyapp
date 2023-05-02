@@ -183,10 +183,9 @@ app.post("/login", (req, res) => {
 
 // Rout to logout
 app.post("/logout", (req,res) => {
-  const username = "username";
   
   // It clears the cookie specified by name
-  res.clearCookie(username);
+  res.clearCookie("user_id");
 
   res.redirect("/urls");
 });

@@ -58,6 +58,14 @@ app.get("/urls", (req, res) => {
   res.render("urls_index", templateVars);
 });
 
+// Route to show registration template
+app.get("/register", (req, res) => {
+  const templateVars = {
+    username: req.cookies["username"],
+  };
+  res.render("registration_page", templateVars);
+})
+
 // Route to show form for new URL
 app.get("/urls/new", (req, res) => {
   const templateVars = {

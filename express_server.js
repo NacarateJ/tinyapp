@@ -136,6 +136,22 @@ app.get("/urls/:id", (req, res) => {
   res.render("urls_show", templateVars);
 });
 
+// Route to handle registration form data
+app.post("/register", (req, res) => {
+  const id = generateRandomString(6);
+  const email = req.body.email;
+  const password = req.body.password;
+
+  // Add new user to users DB
+  users[id] = { id, email, password };
+
+  // Set a user_id cookie containing the user's
+  // newly generated ID
+  res.cookie("user_id", id);
+
+  res.redirect("/urls");
+});
+
 // Route to login
 app.post("/login", (req, res) => {
   const username = "username";

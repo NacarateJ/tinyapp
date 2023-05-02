@@ -33,6 +33,21 @@ const urlDatabase = {
   "9sm5xK": "http://www.google.com",
 };
 
+
+// Object to store users
+const users = {
+  userRandomID: {
+    id: "userRandomID",
+    email: "user@example.com",
+    password: "purple-monkey-dinosaur",
+  },
+  user2RandomID: {
+    id: "user2RandomID",
+    email: "user2@example.com",
+    password: "dishwasher-funk",
+  },
+};
+
 // app.get("/", (req, res) => {
 //   res.send("Hello!");
 // });
@@ -142,6 +157,7 @@ app.post("/logout", (req,res) => {
 
   res.redirect("/urls");
 });
+
 
 // Edit URL
 app.post("/urls/:id", (req, res) => {

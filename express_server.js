@@ -60,14 +60,19 @@ const users = {
 //   res.json(urlDatabase);
 // });
 
+
 // Route handler for all "/urls"
 app.get("/urls", (req, res) => {
+  const userID = req.cookies["user_id"];
+
+  const user = users[userID];
+
   // We need to send the variables to the EJS template
   // inside an object, so we can use the key of
   // the variable (urls) to access the data
   // within the template
   const templateVars = {
-    username: req.cookies["username"],
+    user,
     urls: urlDatabase,
   };
   res.render("urls_index", templateVars);
@@ -75,16 +80,24 @@ app.get("/urls", (req, res) => {
 
 // Route to show registration template
 app.get("/register", (req, res) => {
+  const userID = req.cookies["user_id"];
+
+  const user = users[userID];
+
   const templateVars = {
-    username: req.cookies["username"],
+    user,
   };
   res.render("registration_page", templateVars);
 })
 
 // Route to show form for new URL
 app.get("/urls/new", (req, res) => {
+  const userID = req.cookies["user_id"];
+
+  const user = users[userID];
+
   const templateVars = {
-    username: req.cookies["username"],
+    user,
   };
   res.render("urls_new", templateVars);
 });
@@ -125,10 +138,14 @@ app.get("/u/:id", (req, res) => {
 
 // Render/ show information about a single URL
 app.get("/urls/:id", (req, res) => {
+  const userID = req.cookies["user_id"];
+
+  const user = users[userID];
+
   const id = req.params.id;
 
   const templateVars = {
-    username: req.cookies["username"],
+    user,
     id,
     longURL: urlDatabase[id],
   };
@@ -145,7 +162,7 @@ app.post("/register", (req, res) => {
   // Add new user to users DB
   users[id] = { id, email, password };
 
-  // Set a user_id cookie containing the user's
+  // Set a cookie named user_id containing the user's
   // newly generated ID
   res.cookie("user_id", id);
 
@@ -154,12 +171,12 @@ app.post("/register", (req, res) => {
 
 // Route to login
 app.post("/login", (req, res) => {
-  const username = "username";
-  const loginValue = req.body.username;
+  // const username = "username";
+  // const loginValue = req.body.username;
 
   // Set a cookie named username to the value submitted in
   // the request body via the login form
-  res.cookie(username, loginValue);
+  // res.cookie(username, loginValue);
 
   res.redirect("/urls");
 });

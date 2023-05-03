@@ -8,7 +8,7 @@ const PORT = 8080;
 app.set("view engine", "ejs");
 
 // Func to return 6 random alphanumeric characters
-const generateRandomString = function (length) {
+const generateRandomString = function(length) {
   let result = "";
   const characters =
     "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
@@ -73,7 +73,7 @@ app.get("/register", (req, res) => {
     user,
   };
   res.render("registration_page", templateVars);
-})
+});
 
 // Route to show form for new URL
 app.get("/urls/new", (req, res) => {
@@ -144,14 +144,18 @@ app.post("/register", (req, res) => {
   const email = req.body.email;
   const password = req.body.password;
 
-  // Add new user to users DB
-  users[id] = { id, email, password };
+  if (email === "" || password === "") {
+    res.status(400).send("Please provide a valid email and password.");
+  } else {
+    // Add new user to users DB
+    users[id] = { id, email, password };
 
-  // Set a cookie named user_id containing the user's
-  // newly generated ID
-  res.cookie("user_id", id);
+    // Set a cookie named user_id containing the user's
+    // newly generated ID
+    res.cookie("user_id", id);
 
-  res.redirect("/urls");
+    res.redirect("/urls");
+  }
 });
 
 // Route to login

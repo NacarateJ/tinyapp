@@ -150,13 +150,21 @@ const getUserByEmail = function(email) {
 
 // Route to handle users registration form data
 app.post("/register", (req, res) => {
-  const id = generateRandomString(6);
   const email = req.body.email;
   const password = req.body.password;
   
   if (email === "" || password === "") {
     return res.status(400).send("Please provide a valid email and password.");
   }
+  
+  const findEmail = getUserByEmail(email);
+  
+  if (findEmail) {
+    return res.status(400).send("Email already exist.");
+  }
+  
+  const id = generateRandomString(6);
+
     // Add new user to users DB
     users[id] = { id, email, password };
 

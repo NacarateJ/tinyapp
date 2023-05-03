@@ -18,8 +18,6 @@ const generateRandomString = function (length) {
   return result;
 };
 
-// generateRandomString(6);
-
 // Middleware to translate, or parse the body from the POST request
 app.use(express.urlencoded({ extended: true }));
 
@@ -47,19 +45,6 @@ const users = {
     password: "dishwasher-funk",
   },
 };
-
-// app.get("/", (req, res) => {
-//   res.send("Hello!");
-// });
-
-// app.get("/hello", (req, res) => {
-//   res.send("<html><body>Hello <b>World</b></body></html>\n");
-// });
-
-// app.get("/urls.json", (req, res) => {
-//   res.json(urlDatabase);
-// });
-
 
 // Route handler for all "/urls"
 app.get("/urls", (req, res) => {

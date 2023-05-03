@@ -136,12 +136,24 @@ app.get("/urls/:id", (req, res) => {
   res.render("urls_show", templateVars);
 });
 
-// Route to handle registration form data
+// Helper function to check for existing users email
+const getUserByEmail = function(email) {
+  for (const userID in users) {
+
+    if (email === users[userID].email) {
+      return users[userID];
+    }
+  }
+  
+  return null;
+};
+
+// Route to handle users registration form data
 app.post("/register", (req, res) => {
   const id = generateRandomString(6);
   const email = req.body.email;
   const password = req.body.password;
-
+  
   if (email === "" || password === "") {
     return res.status(400).send("Please provide a valid email and password.");
   }

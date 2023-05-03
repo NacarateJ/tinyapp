@@ -96,8 +96,8 @@ app.post("/urls", (req, res) => {
     if (err || response.statusCode !== 200) {
       // If website does not exist or is not accessible,
       // send error
-      res.send("Please provide a valid URL.");
-    } else {
+      return res.send("Please provide a valid URL.");
+    }
       // New id (shortURL)
       const newID = generateRandomString(6);
 
@@ -106,7 +106,6 @@ app.post("/urls", (req, res) => {
 
       // Use the NEW route to show/view the URL created
       res.redirect(`/urls/${newID}`);
-    }
   });
 });
 
@@ -115,10 +114,9 @@ app.get("/u/:id", (req, res) => {
   const longURL = urlDatabase[req.params.id];
   // Error if the user requests a short URL with a non-existant id
   if (!longURL) {
-    res.status(404).send("URL not found");
-  } else {
-    res.redirect(longURL);
+    return res.status(404).send("URL not found");
   }
+    res.redirect(longURL);
 });
 
 // Render/ show information about a single URL
@@ -145,8 +143,8 @@ app.post("/register", (req, res) => {
   const password = req.body.password;
 
   if (email === "" || password === "") {
-    res.status(400).send("Please provide a valid email and password.");
-  } else {
+    return res.status(400).send("Please provide a valid email and password.");
+  }
     // Add new user to users DB
     users[id] = { id, email, password };
 
@@ -155,7 +153,6 @@ app.post("/register", (req, res) => {
     res.cookie("user_id", id);
 
     res.redirect("/urls");
-  }
 });
 
 // Route to login

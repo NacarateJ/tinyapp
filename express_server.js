@@ -1,22 +1,21 @@
+/////////////////////////////////////////////////////////////////////
+// Requires
+/////////////////////////////////////////////////////////////////////
+
 const express = require("express");
 const request = require("request");
 const cookieParser = require("cookie-parser");
 
+/////////////////////////////////////////////////////////////////////
+// Initialization
+/////////////////////////////////////////////////////////////////////
+
 const app = express();
 const PORT = 8080;
 
-app.set("view engine", "ejs");
-
-// Func to return 6 random alphanumeric characters
-const generateRandomString = function(length) {
-  let result = "";
-  const characters =
-    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-  for (let i = 0; i < length; i++) {
-    result += characters.charAt(Math.floor(Math.random() * characters.length));
-  }
-  return result;
-};
+/////////////////////////////////////////////////////////////////////
+// Middlewares
+/////////////////////////////////////////////////////////////////////
 
 // Middleware to translate, or parse the body from the POST request
 app.use(express.urlencoded({ extended: true }));
@@ -25,12 +24,21 @@ app.use(express.urlencoded({ extended: true }));
 // available in the req.cookies object
 app.use(cookieParser());
 
+/////////////////////////////////////////////////////////////////////
+// Configuration
+/////////////////////////////////////////////////////////////////////
+
+app.set("view engine", "ejs");
+
+/////////////////////////////////////////////////////////////////////
+// Database - URL - Users
+/////////////////////////////////////////////////////////////////////
+
 // Data to show on the URLs page
 const urlDatabase = {
   b2xVn2: "http://www.lighthouselabs.ca",
   "9sm5xK": "http://www.google.com",
 };
-
 
 // Object to store users
 const users = {
@@ -45,6 +53,91 @@ const users = {
     password: "dishwasher-funk",
   },
 };
+
+/////////////////////////////////////////////////////////////////////
+// Helper Functions
+/////////////////////////////////////////////////////////////////////
+
+// Func to return 6 random alphanumeric characters
+const generateRandomString = function (length) {
+  let result = "";
+  const characters =
+    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+  for (let i = 0; i < length; i++) {
+    result += characters.charAt(Math.floor(Math.random() * characters.length));
+  }
+  return result;
+};
+
+// Helper function to check for existing users email
+const getUserByEmail = function (email) {
+  for (const userID in users) {
+    if (email === users[userID].email) {
+      return users[userID];
+    }
+  }
+
+  return null;
+};
+
+/////////////////////////////////////////////////////////////////////
+// Routes - Registration - Login
+/////////////////////////////////////////////////////////////////////
+
+// Route to show registration template
+app.get("/register", (req, res) => {
+  const userID = req.cookies["user_id"];
+
+  const user = users[userID];
+
+  const templateVars = {
+    user,
+  };
+  res.render("registration_page", templateVars);
+});
+
+// Route to handle users registration form data
+app.post("/register", (req, res) => {
+  const email = req.body.email;
+  const password = req.body.password;
+
+  if (email === "" || password === "") {
+    return res.status(400).send("Please provide a valid email and password.");
+  }
+
+  const findEmail = getUserByEmail(email);
+
+  if (findEmail) {
+    return res.status(400).send("Email already exist.");
+  }
+
+  const id = generateRandomString(6);
+
+  // Add new user to users DB
+  users[id] = { id, email, password };
+
+  // Set a cookie named user_id containing the user's
+  // newly generated ID
+  res.cookie("user_id", id);
+
+  res.redirect("/urls");
+});
+
+// Route to login
+app.post("/login", (req, res) => {
+  // const username = "username";
+  // const loginValue = req.body.username;
+
+  // Set a cookie named username to the value submitted in
+  // the request body via the login form
+  // res.cookie(username, loginValue);
+
+  res.redirect("/urls");
+});
+
+/////////////////////////////////////////////////////////////////////
+// Routes - URLs
+/////////////////////////////////////////////////////////////////////
 
 // Route handler for all "/urls"
 app.get("/urls", (req, res) => {
@@ -63,18 +156,6 @@ app.get("/urls", (req, res) => {
   res.render("urls_index", templateVars);
 });
 
-// Route to show registration template
-app.get("/register", (req, res) => {
-  const userID = req.cookies["user_id"];
-
-  const user = users[userID];
-
-  const templateVars = {
-    user,
-  };
-  res.render("registration_page", templateVars);
-});
-
 // Route to show form for new URL
 app.get("/urls/new", (req, res) => {
   const userID = req.cookies["user_id"];
@@ -87,7 +168,7 @@ app.get("/urls/new", (req, res) => {
   res.render("urls_new", templateVars);
 });
 
-// Route to receive form submission
+// Route to receive URL form submission
 app.post("/urls", (req, res) => {
   const newURL = req.body.longURL;
 
@@ -98,14 +179,14 @@ app.post("/urls", (req, res) => {
       // send error
       return res.send("Please provide a valid URL.");
     }
-      // New id (shortURL)
-      const newID = generateRandomString(6);
+    // New id (shortURL)
+    const newID = generateRandomString(6);
 
-      // Add new id (shortURL)-longURL key-value pairs to DB
-      urlDatabase[newID] = newURL;
+    // Add new id (shortURL)-longURL key-value pairs to DB
+    urlDatabase[newID] = newURL;
 
-      // Use the NEW route to show/view the URL created
-      res.redirect(`/urls/${newID}`);
+    // Use the NEW route to show/view the URL created
+    res.redirect(`/urls/${newID}`);
   });
 });
 
@@ -116,7 +197,7 @@ app.get("/u/:id", (req, res) => {
   if (!longURL) {
     return res.status(404).send("URL not found");
   }
-    res.redirect(longURL);
+  res.redirect(longURL);
 });
 
 // Render/ show information about a single URL
@@ -135,67 +216,6 @@ app.get("/urls/:id", (req, res) => {
 
   res.render("urls_show", templateVars);
 });
-
-// Helper function to check for existing users email
-const getUserByEmail = function(email) {
-  for (const userID in users) {
-
-    if (email === users[userID].email) {
-      return users[userID];
-    }
-  }
-  
-  return null;
-};
-
-// Route to handle users registration form data
-app.post("/register", (req, res) => {
-  const email = req.body.email;
-  const password = req.body.password;
-  
-  if (email === "" || password === "") {
-    return res.status(400).send("Please provide a valid email and password.");
-  }
-  
-  const findEmail = getUserByEmail(email);
-  
-  if (findEmail) {
-    return res.status(400).send("Email already exist.");
-  }
-  
-  const id = generateRandomString(6);
-
-    // Add new user to users DB
-    users[id] = { id, email, password };
-
-    // Set a cookie named user_id containing the user's
-    // newly generated ID
-    res.cookie("user_id", id);
-
-    res.redirect("/urls");
-});
-
-// Route to login
-app.post("/login", (req, res) => {
-  // const username = "username";
-  // const loginValue = req.body.username;
-
-  // Set a cookie named username to the value submitted in
-  // the request body via the login form
-  // res.cookie(username, loginValue);
-
-  res.redirect("/urls");
-});
-
-// Rout to logout
-app.post("/logout", (req,res) => {
-  
-  // It clears the cookie specified by name
-  res.clearCookie("user_id");
-
-  res.redirect("/urls");
-});
-
 
 // Edit URL
 app.post("/urls/:id", (req, res) => {
@@ -219,6 +239,22 @@ app.post("/urls/:id/delete", (req, res) => {
 
   res.redirect("/urls");
 });
+
+/////////////////////////////////////////////////////////////////////
+// Route - Logout
+/////////////////////////////////////////////////////////////////////
+
+// Rout to logout
+app.post("/logout", (req, res) => {
+  // It clears the cookie specified by name
+  res.clearCookie("user_id");
+
+  res.redirect("/urls");
+});
+
+/////////////////////////////////////////////////////////////////////
+// Listener
+/////////////////////////////////////////////////////////////////////
 
 app.listen(PORT, () => {
   console.log(`App listening on port ${PORT}!`);

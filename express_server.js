@@ -137,15 +137,21 @@ app.get("/login", (req, res) => {
   res.render("login_page", templateVars);
 });
 
+// Route to handle login form submition and user authentication
 app.post("/login", (req, res) => {
-  // const username = "username";
-  // const loginValue = req.body.username;
+  const email  = req.body.email;
+  const password = req.body.password;
+  const user = getUserByEmail(email);
 
-  // Set a cookie named username to the value submitted in
-  // the request body via the login form
-  // res.cookie(username, loginValue);
+  // if the login inf. matches a existing user
+  if (user["email"] === email && user["password"] === password) {
+    res.cookie("user_id", user["id"]);
+    return res.redirect("/urls");
+  }
+  
 
-  res.redirect("/urls");
+  // If there is no match
+  res.status(401).send("Invalid email or password");
 });
 
 /////////////////////////////////////////////////////////////////////

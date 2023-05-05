@@ -272,7 +272,7 @@ app.post("/logout", (req, res) => {
   // It clears the cookie specified by name
   res.clearCookie("user_id");
 
-  res.redirect("/urls");
+  res.redirect("/login");
 });
 
 /////////////////////////////////////////////////////////////////////

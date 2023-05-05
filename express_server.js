@@ -139,7 +139,7 @@ app.get("/login", (req, res) => {
 
 // Route to handle login form submition and user authentication
 app.post("/login", (req, res) => {
-  const email  = req.body.email;
+  const email = req.body.email;
   const password = req.body.password;
 
   if (email === "" || password === "") {
@@ -148,14 +148,16 @@ app.post("/login", (req, res) => {
 
   const user = getUserByEmail(email);
 
+  // If there is no match
+  if (!user) {
+    return res.status(403).send("Invalid email or password");
+  }
+
   // if the login inf. matches a existing user
   if (user["email"] === email && user["password"] === password) {
     res.cookie("user_id", user["id"]);
     return res.redirect("/urls");
   }
-  
-  // If there is no match
-  res.status(403).send("Invalid email or password");
 });
 
 /////////////////////////////////////////////////////////////////////

@@ -248,16 +248,23 @@ app.get("/u/:id", (req, res) => {
 
 // Render/ show information about a single URL
 app.get("/urls/:id", (req, res) => {
+  const id = req.params.id;
+
+  const longURL = urlDatabase[id];
+  // Error if the user requests a short URL with a non-existant id
+  if (!longURL) {
+    return res.status(404).send("URL not found");
+  }
+
   const userID = req.cookies["user_id"];
 
   const user = users[userID];
 
-  const id = req.params.id;
 
   const templateVars = {
     user,
     id,
-    longURL: urlDatabase[id],
+    longURL,
   };
 
   res.render("urls_show", templateVars);

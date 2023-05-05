@@ -155,7 +155,7 @@ app.post("/login", (req, res) => {
   }
   
   // If there is no match
-  res.status(401).send("Invalid email or password");
+  res.status(403).send("Invalid email or password");
 });
 
 /////////////////////////////////////////////////////////////////////

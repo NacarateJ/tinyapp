@@ -94,6 +94,11 @@ app.get("/register", (req, res) => {
   const templateVars = {
     user,
   };
+
+  if (user) {
+    return res.redirect("urls");
+  }
+  
   res.render("registration_page", templateVars);
 });
 
@@ -134,6 +139,10 @@ app.get("/login", (req, res) => {
     user,
   };
   
+  if (user) {
+    return res.redirect("urls");
+  }
+
   res.render("login_page", templateVars);
 });
 

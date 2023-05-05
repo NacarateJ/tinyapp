@@ -25,14 +25,12 @@
         </form>
       </div>
     <% } else { %>
-      <div class="navbar-form">
-        <form method="POST" action="/login">
-          <input type="email" name="email" placeholder="Email">
-           <input type="password" name="password" placeholder="Password"/>
-          <button type="submit">Login</button>
-        </form>
-      </div>
+      <nav class="navbar-links">
+        <a class="navbar-registration" href="/register">Register</a>
+        <a class="navbar-login" href="/login">Login</a>
+      </nav>
     <% } %>
+    
 
      <button
       class="navbar-toggler"

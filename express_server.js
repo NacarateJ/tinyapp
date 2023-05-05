@@ -141,6 +141,11 @@ app.get("/login", (req, res) => {
 app.post("/login", (req, res) => {
   const email  = req.body.email;
   const password = req.body.password;
+
+  if (email === "" || password === "") {
+    return res.status(400).send("Please provide a valid email and password.");
+  }
+
   const user = getUserByEmail(email);
 
   // if the login inf. matches a existing user
@@ -149,7 +154,6 @@ app.post("/login", (req, res) => {
     return res.redirect("/urls");
   }
   
-
   // If there is no match
   res.status(401).send("Invalid email or password");
 });

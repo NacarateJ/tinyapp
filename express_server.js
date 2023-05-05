@@ -73,10 +73,11 @@ const generateRandomString = function (length) {
 const getUserByEmail = function (email) {
   for (const userID in users) {
     if (email === users[userID].email) {
+      // Returns the specific user object
       return users[userID];
     }
   }
-
+  
   return null;
 };
 
@@ -123,7 +124,19 @@ app.post("/register", (req, res) => {
   res.redirect("/urls");
 });
 
-// Route to login
+// Route to serve the login_page - template to the user
+app.get("/login", (req, res) => {
+  const userID = req.cookies["user_id"];
+
+  const user = users[userID];
+
+  const templateVars = {
+    user,
+  };
+  
+  res.render("login_page", templateVars);
+});
+
 app.post("/login", (req, res) => {
   // const username = "username";
   // const loginValue = req.body.username;

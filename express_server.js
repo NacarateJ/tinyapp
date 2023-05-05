@@ -96,9 +96,9 @@ app.get("/register", (req, res) => {
   };
 
   if (user) {
-    return res.redirect("urls");
+    return res.redirect("/urls");
   }
-  
+
   res.render("registration_page", templateVars);
 });
 
@@ -140,7 +140,7 @@ app.get("/login", (req, res) => {
   };
   
   if (user) {
-    return res.redirect("urls");
+    return res.redirect("/urls");
   }
 
   res.render("login_page", templateVars);
@@ -199,11 +199,23 @@ app.get("/urls/new", (req, res) => {
   const templateVars = {
     user,
   };
+
+  if (!user) {
+    return res.redirect("/login");
+  }
+  
   res.render("urls_new", templateVars);
 });
 
 // Route to receive URL form submission
 app.post("/urls", (req, res) => {
+  const userID = req.cookies["user_id"];
+  const user = users[userID];
+
+  if (!user) {
+    return res.send("Please login or register to create short URLs.");
+  }
+
   const newURL = req.body.longURL;
 
   // Check if the website exists or is accessible

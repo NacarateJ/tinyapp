@@ -6,7 +6,7 @@
 const express = require("express");
 const request = require("request");
 const bcrypt = require("bcryptjs");
-const cookieParser = require("cookie-parser");
+const cookieSession = require("cookie-session");
 
 /////////////////////////////////////////////////////////////////////
 // Initialization

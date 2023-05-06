@@ -87,22 +87,26 @@ const getUserByEmail = function (email) {
   return null;
 };
 
-// Returns only the user's logged in URLs
-const urlsForUser = function(id) {
-  const userURLs = [];
+const urlsForUser = function (id) {
+  const userURLs = {};
+  let foundURL = false;
 
   for (const url in urlDatabase) {
     if (id === urlDatabase[url].userID) {
-      userURLs.push(urlDatabase[url].longURL);
+      userURLs[url] = urlDatabase[url];
+      foundURL = true;
     }
   }
 
-  if (userURLs.length === 0) {
+  if (!foundURL) {
     return "Start creating your short URLs!";
   }
 
   return userURLs;
-  };
+};
+
+console.log(urlsForUser("userRandomID"));
+
 
 /////////////////////////////////////////////////////////////////////
 // Routes - Registration - Login

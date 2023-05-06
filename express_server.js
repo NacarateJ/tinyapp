@@ -323,6 +323,11 @@ app.post("/urls/:id", (req, res) => {
     return res.status(401).send("Unauthorized");
   }
 
+  // Check if the URL ID exists in the database
+  if (!urlDatabase[id]) {
+    return res.status(404).send("URL not found");
+  }
+
   // Check if the user is the owner of the URL
   if (urlDatabase[id].userID !== userID) {
     return res.status(401).send("Unauthorized");
@@ -344,6 +349,11 @@ app.post("/urls/:id/delete", (req, res) => {
   // Check if the user is logged in
   if (!user) {
     return res.status(401).send("Unauthorized");
+  }
+
+  // Check if the URL ID exists in the database
+  if (!urlDatabase[id]) {
+    return res.status(404).send("URL not found");
   }
 
   // Check if the user is the owner of the URL

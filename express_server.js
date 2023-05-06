@@ -185,15 +185,19 @@ app.get("/urls", (req, res) => {
 
   const user = users[userID];
 
-  // We need to send the variables to the EJS template
-  // inside an object, so we can use the key of
-  // the variable (urls) to access the data
-  // within the template
-  const templateVars = {
-    user,
-    urlDatabase,
-  };
-  res.render("urls_index", templateVars);
+  if (user) {
+    // We need to send the variables to the EJS template
+    // inside an object, so we can use the key of
+    // the variable (urls) to access the data
+    // within the template
+    const templateVars = {
+      user,
+      urlDatabase,
+    };
+    res.render("urls_index", templateVars);
+  }
+  
+  return res.status(400).send("Please login or register.");
 });
 
 // Route to show form for new URL

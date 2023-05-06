@@ -19,12 +19,16 @@ const PORT = 8080;
 // Middlewares
 /////////////////////////////////////////////////////////////////////
 
-// Middleware to translate, or parse the body from the POST request
+// Translate, or parse the body from the POST request
 app.use(express.urlencoded({ extended: true }));
 
-// Middleware to parse the cookies sent in the request and make them
-// available in the req.cookies object
-app.use(cookieParser());
+// Sets up encrypted cookies with security features representing the session
+app.use(
+  cookieSession({
+    name: "express_app_session_id",
+    keys: ["lfdk92jv9e40gjd", "2k5hc7d8f1n0sgj"],
+  })
+);
 
 /////////////////////////////////////////////////////////////////////
 // Configuration

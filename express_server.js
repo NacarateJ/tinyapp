@@ -3,7 +3,11 @@
 /////////////////////////////////////////////////////////////////////
 
 // Modules
-const { getUserByEmail } = require("./helpers");
+const {
+  getUserByEmail,
+  generateRandomString,
+  urlsForUser,
+} = require("./helpers");
 
 // NPM packages
 const express = require("express");
@@ -74,40 +78,6 @@ const users = {
     password: "$2a$10$XmdpBeNUrd7XqLHJncCsf.FvfniRSylby.gaVpN7tDj67pr0z0qLu",
   },
 };
-
-/////////////////////////////////////////////////////////////////////
-// Helper Functions
-/////////////////////////////////////////////////////////////////////
-
-// Func to return 6 random alphanumeric characters
-const generateRandomString = function (length) {
-  let result = "";
-  const characters =
-    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-  for (let i = 0; i < length; i++) {
-    result += characters.charAt(Math.floor(Math.random() * characters.length));
-  }
-  return result;
-};
-
-const urlsForUser = function (id) {
-  const userURLs = {};
-  let foundURL = false;
-
-  for (const url in urlDatabase) {
-    if (id === urlDatabase[url].userID) {
-      userURLs[url] = urlDatabase[url];
-      foundURL = true;
-    }
-  }
-
-  if (!foundURL) {
-    return "Start creating your short URLs!";
-  }
-
-  return userURLs;
-};
-
 
 /////////////////////////////////////////////////////////////////////
 // Routes - Registration - Login

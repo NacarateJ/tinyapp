@@ -88,11 +88,11 @@ const generateRandomString = function (length) {
 };
 
 // Helper function to check for existing users email
-const getUserByEmail = function (email) {
-  for (const userID in users) {
-    if (email === users[userID].email) {
+const getUserByEmail = function (email, usersDatabase) {
+  for (const userID in usersDatabase) {
+    if (email === usersDatabase[userID].email) {
       // Returns the specific user object
-      return users[userID];
+      return usersDatabase[userID];
     }
   }
 
@@ -127,7 +127,7 @@ app.get("/register", (req, res) => {
   const userID = req.session.user_id;
 
   const user = users[userID];
-
+  
   const templateVars = {
     user,
   };
@@ -148,7 +148,7 @@ app.post("/register", (req, res) => {
     return res.status(400).send("Please provide a valid email and password.");
   }
 
-  const findEmail = getUserByEmail(email);
+  const findEmail = getUserByEmail(email, users);
 
   if (findEmail) {
     return res.status(400).send("Email already exist.");
@@ -197,7 +197,7 @@ app.post("/login", (req, res) => {
     return res.status(400).send("Please provide a valid email and password.");
   }
 
-  const user = getUserByEmail(email);
+  const user = getUserByEmail(email, users);
 
   // If there is no match
   if (!user) {

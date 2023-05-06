@@ -7,7 +7,7 @@ const getUserByEmail = function (email, usersDatabase) {
     }
   }
 
-  return null;
+  return undefined;
 };
 
 module.exports = { getUserByEmail };

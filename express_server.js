@@ -40,25 +40,26 @@ app.set("view engine", "ejs");
 const urlDatabase = {
   b2xVn2: {
     longURL: "http://www.lighthouselabs.ca",
-    userID: "userRandomID",
+    userID: "FV0qwV",
   },
   "9sm5xK": {
     longURL: "http://www.google.com",
-    userID: "user2RandomID",
+    userID: "N7Porb",
   },
 };
 
 // Object to store users
+// All passwords = 1234
 const users = {
-  userRandomID: {
-    id: "userRandomID",
+  FV0qwV: {
+    id: "FV0qwV",
     email: "user@example.com",
-    password: "1234",
+    password: "$2a$10$.5UR8Og.2kSQ8xx6Pr9Vx.smflmQ0imqxodRtusY3NkdfdCg1OdPy",
   },
-  user2RandomID: {
-    id: "user2RandomID",
+  N7Porb: {
+    id: "N7Porb",
     email: "user2@example.com",
-    password: "dishwasher-funk",
+    password: "$2a$10$Y8li1knP1lcFGjp7cyqbiufndJ1xijUoZo3x7Pcy79AYajZ0jMMtG",
   },
   dYNYhU: {
     id: "dYNYhU",

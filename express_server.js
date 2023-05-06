@@ -1,9 +1,11 @@
 /////////////////////////////////////////////////////////////////////
-// Requires
+// Dependencies
 /////////////////////////////////////////////////////////////////////
 
+// NPM packages
 const express = require("express");
 const request = require("request");
+const bcrypt = require("bcryptjs");
 const cookieParser = require("cookie-parser");
 
 /////////////////////////////////////////////////////////////////////
@@ -132,7 +134,7 @@ app.post("/register", (req, res) => {
   const email = req.body.email;
   const password = req.body.password;
 
-  if (email === "" || password === "") {
+  if (!email || !password) {
     return res.status(400).send("Please provide a valid email and password.");
   }
 
@@ -144,8 +146,13 @@ app.post("/register", (req, res) => {
 
   const id = generateRandomString(6);
 
+  // Hash our password
+  const salt = bcrypt.genSaltSync(10);
+  const hash = bcrypt.hashSync(password, salt);
+
   // Add new user to users DB
-  users[id] = { id, email, password };
+  users[id] = { id, email, hash };
+  console.log("users[id", users[id]);
 
   // Set a cookie named user_id containing the user's
   // newly generated ID
@@ -213,7 +220,7 @@ app.get("/urls", (req, res) => {
     // within the template
     const templateVars = {
       user,
-      userURLs
+      userURLs,
     };
     
     res.render("urls_index", templateVars);

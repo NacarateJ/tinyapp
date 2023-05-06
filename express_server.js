@@ -105,8 +105,6 @@ const urlsForUser = function (id) {
   return userURLs;
 };
 
-console.log(urlsForUser("userRandomID"));
-
 
 /////////////////////////////////////////////////////////////////////
 // Routes - Registration - Login
@@ -206,6 +204,8 @@ app.get("/urls", (req, res) => {
 
   const user = users[userID];
 
+  const userURLs = urlsForUser(userID);
+
   if (user) {
     // We need to send the variables to the EJS template
     // inside an object, so we can use the key of
@@ -213,13 +213,15 @@ app.get("/urls", (req, res) => {
     // within the template
     const templateVars = {
       user,
-      urlDatabase,
+      userURLs
     };
+    
     res.render("urls_index", templateVars);
+  } else {
+    return res.status(400).send("Please login or register.");
   }
-  
-  return res.status(400).send("Please login or register.");
 });
+
 
 // Route to show form for new URL
 app.get("/urls/new", (req, res) => {
@@ -264,8 +266,6 @@ app.post("/urls", (req, res) => {
         longURL: newURL,
         userID: userID,
       };
-
-      console.log("urlDatabase", urlDatabase);
 
     // Use the NEW route to show/view the URL created
     res.redirect(`/urls/${newID}`);

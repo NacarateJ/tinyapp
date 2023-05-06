@@ -60,6 +60,11 @@ const users = {
     email: "user2@example.com",
     password: "dishwasher-funk",
   },
+  dYNYhU: {
+    id: "dYNYhU",
+    email: "user3@example.com",
+    password: "$2a$10$XmdpBeNUrd7XqLHJncCsf.FvfniRSylby.gaVpN7tDj67pr0z0qLu",
+  },
 };
 
 /////////////////////////////////////////////////////////////////////
@@ -183,7 +188,7 @@ app.post("/login", (req, res) => {
   const email = req.body.email;
   const password = req.body.password;
 
-  if (email === "" || password === "") {
+  if (!email || !password) {
     return res.status(400).send("Please provide a valid email and password.");
   }
 
@@ -191,13 +196,20 @@ app.post("/login", (req, res) => {
 
   // If there is no match
   if (!user) {
-    return res.status(403).send("Invalid email or password");
+    return res.status(403).send("No user found with that email.");
   }
 
+  // Compare ecrypted password
+  const passwordMatch = bcrypt.compareSync(password, user["password"]); // true || false
+
   // if the login inf. matches a existing user
-  if (user["email"] === email && user["password"] === password) {
+  if (user["email"] === email && passwordMatch) {
     res.cookie("user_id", user["id"]);
     return res.redirect("/urls");
+  }
+
+  if (passwordMatch === false) {
+    return res.status(400).send("Password does not match.");
   }
 });
 

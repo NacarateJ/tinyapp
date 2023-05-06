@@ -285,17 +285,18 @@ app.get("/u/:id", (req, res) => {
 // Render/ show information about a single URL
 app.get("/urls/:id", (req, res) => {
   const id = req.params.id;
+  const userID = req.cookies["user_id"];
+  const user = users[userID];
+
+  if (!user) {
+    return res.send("Please login or register start creating short URLs.");
+  }
 
   const longURL = urlDatabase[id].longURL;
   // Error if the user requests a short URL with a non-existant id
   if (!longURL) {
     return res.status(404).send("URL not found");
   }
-
-  const userID = req.cookies["user_id"];
-
-  const user = users[userID];
-
 
   const templateVars = {
     user,

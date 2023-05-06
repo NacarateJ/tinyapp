@@ -249,7 +249,7 @@ app.post("/urls", (req, res) => {
 
 // Redirect user to the appropriate longURL site
 app.get("/u/:id", (req, res) => {
-  const longURL = urlDatabase[req.params.id];
+  const longURL = urlDatabase[req.params.id].longURL;
   // Error if the user requests a short URL with a non-existant id
   if (!longURL) {
     return res.status(404).send("URL not found");
@@ -261,7 +261,7 @@ app.get("/u/:id", (req, res) => {
 app.get("/urls/:id", (req, res) => {
   const id = req.params.id;
 
-  const longURL = urlDatabase[id];
+  const longURL = urlDatabase[id].longURL;
   // Error if the user requests a short URL with a non-existant id
   if (!longURL) {
     return res.status(404).send("URL not found");
@@ -288,7 +288,7 @@ app.post("/urls/:id", (req, res) => {
   const updatedUrl = req.body.longURL;
 
   // Update URL in DB
-  urlDatabase[id] = updatedUrl;
+  urlDatabase[id].longURL = updatedUrl;
 
   // Use the NEW route to show/view the URL created
   res.redirect("/urls");

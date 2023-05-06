@@ -292,6 +292,10 @@ app.get("/urls/:id", (req, res) => {
     return res.send("Please login or register start creating short URLs.");
   }
 
+  if (urlDatabase[id].userID !== userID) {
+    return res.send("URL not found.");
+  }
+
   const longURL = urlDatabase[id].longURL;
   // Error if the user requests a short URL with a non-existant id
   if (!longURL) {

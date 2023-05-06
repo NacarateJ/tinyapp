@@ -314,8 +314,19 @@ app.get("/urls/:id", (req, res) => {
 // Edit URL
 app.post("/urls/:id", (req, res) => {
   const id = req.params.id;
-
   const updatedUrl = req.body.longURL;
+  const userID = req.cookies["user_id"];
+  const user = users[userID];
+
+  // Check if the user is logged in
+  if (!user) {
+    return res.status(401).send("Unauthorized");
+  }
+
+  // Check if the user is the owner of the URL
+  if (urlDatabase[id].userID !== userID) {
+    return res.status(401).send("Unauthorized");
+  }
 
   // Update URL in DB
   urlDatabase[id].longURL = updatedUrl;
@@ -327,6 +338,18 @@ app.post("/urls/:id", (req, res) => {
 // Delete URL
 app.post("/urls/:id/delete", (req, res) => {
   const id = req.params.id;
+  const userID = req.cookies["user_id"];
+  const user = users[userID];
+
+  // Check if the user is logged in
+  if (!user) {
+    return res.status(401).send("Unauthorized");
+  }
+
+  // Check if the user is the owner of the URL
+  if (urlDatabase[id].userID !== userID) {
+    return res.status(401).send("Unauthorized");
+  }
 
   // The delete operator removes a property from an object
   delete urlDatabase[id];

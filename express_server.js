@@ -124,7 +124,7 @@ const urlsForUser = function (id) {
 
 // Route to show registration template
 app.get("/register", (req, res) => {
-  const userID = req.cookies["user_id"];
+  const userID = req.session.user_id;
 
   const user = users[userID];
 
@@ -162,18 +162,18 @@ app.post("/register", (req, res) => {
 
   // Add new user to users DB
   users[id] = { id, email, hash };
-  console.log("users[id", users[id]);
 
   // Set a cookie named user_id containing the user's
   // newly generated ID
-  res.cookie("user_id", id);
+  // res.cookie("user_id", id);
+  req.session.user_id = id;
 
   res.redirect("/urls");
 });
 
 // Route to serve the login_page - template to the user
 app.get("/login", (req, res) => {
-  const userID = req.cookies["user_id"];
+  const userID = req.session.user_id;
 
   const user = users[userID];
 
@@ -209,7 +209,8 @@ app.post("/login", (req, res) => {
 
   // if the login inf. matches a existing user
   if (user["email"] === email && passwordMatch) {
-    res.cookie("user_id", user["id"]);
+    // res.cookie("user_id", user["id"]);
+    req.session.user_id = user["id"];
     return res.redirect("/urls");
   }
 
@@ -224,7 +225,7 @@ app.post("/login", (req, res) => {
 
 // Route handler for all "/urls"
 app.get("/urls", (req, res) => {
-  const userID = req.cookies["user_id"];
+  const userID = req.session.user_id;
 
   const user = users[userID];
 
@@ -249,7 +250,7 @@ app.get("/urls", (req, res) => {
 
 // Route to show form for new URL
 app.get("/urls/new", (req, res) => {
-  const userID = req.cookies["user_id"];
+  const userID = req.session.user_id;
 
   const user = users[userID];
 
@@ -266,7 +267,7 @@ app.get("/urls/new", (req, res) => {
 
 // Route to receive URL form submission
 app.post("/urls", (req, res) => {
-  const userID = req.cookies["user_id"];
+  const userID = req.session.user_id;
   const user = users[userID];
 
   if (!user) {
@@ -309,7 +310,7 @@ app.get("/u/:id", (req, res) => {
 // Render/ show information about a single URL
 app.get("/urls/:id", (req, res) => {
   const id = req.params.id;
-  const userID = req.cookies["user_id"];
+  const userID = req.session.user_id;
   const user = users[userID];
 
   if (!user) {
@@ -339,7 +340,7 @@ app.get("/urls/:id", (req, res) => {
 app.post("/urls/:id", (req, res) => {
   const id = req.params.id;
   const updatedUrl = req.body.longURL;
-  const userID = req.cookies["user_id"];
+  const userID = req.session.user_id;
   const user = users[userID];
 
   // Check if the user is logged in
@@ -367,7 +368,7 @@ app.post("/urls/:id", (req, res) => {
 // Delete URL
 app.post("/urls/:id/delete", (req, res) => {
   const id = req.params.id;
-  const userID = req.cookies["user_id"];
+  const userID = req.session.user_id;
   const user = users[userID];
 
   // Check if the user is logged in
@@ -398,7 +399,7 @@ app.post("/urls/:id/delete", (req, res) => {
 // Rout to logout
 app.post("/logout", (req, res) => {
   // It clears the cookie specified by name
-  res.clearCookie("user_id");
+  req.session = null;
 
   res.redirect("/login");
 });
@@ -410,3 +411,4 @@ app.post("/logout", (req, res) => {
 app.listen(PORT, () => {
   console.log(`App listening on port ${PORT}!`);
 });
+

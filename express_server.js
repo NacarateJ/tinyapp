@@ -89,14 +89,20 @@ const getUserByEmail = function (email) {
 
 // Returns only the user's logged in URLs
 const urlsForUser = function(id) {
+  const userURLs = [];
+
   for (const url in urlDatabase) {
     if (id === urlDatabase[url].userID) {
-      return urlDatabase[url].longURL;
+      userURLs.push(urlDatabase[url].longURL);
     }
   }
 
-  return "Start creating your short URLs!";
-}
+  if (userURLs.length === 0) {
+    return "Start creating your short URLs!";
+  }
+
+  return userURLs;
+  };
 
 /////////////////////////////////////////////////////////////////////
 // Routes - Registration - Login

@@ -2,6 +2,9 @@
 // Dependencies
 /////////////////////////////////////////////////////////////////////
 
+// Modules
+const { getUserByEmail } = require("./helpers");
+
 // NPM packages
 const express = require("express");
 const request = require("request");
@@ -85,18 +88,6 @@ const generateRandomString = function (length) {
     result += characters.charAt(Math.floor(Math.random() * characters.length));
   }
   return result;
-};
-
-// Helper function to check for existing users email
-const getUserByEmail = function (email, usersDatabase) {
-  for (const userID in usersDatabase) {
-    if (email === usersDatabase[userID].email) {
-      // Returns the specific user object
-      return usersDatabase[userID];
-    }
-  }
-
-  return null;
 };
 
 const urlsForUser = function (id) {

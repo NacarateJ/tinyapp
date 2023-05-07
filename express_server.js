@@ -278,8 +278,9 @@ app.get("/urls/:id", (req, res) => {
     return res.send("Please login or register start creating short URLs.");
   }
 
+  // Only the owner of the URL can access it
   if (urlDatabase[id].userID !== userID) {
-    return res.send("URL not found.");
+    return res.send("Access denied.");
   }
 
   const longURL = urlDatabase[id].longURL;

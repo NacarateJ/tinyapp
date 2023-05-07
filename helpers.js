@@ -28,16 +28,14 @@ const getUserByEmail = function (email, usersDatabase) {
 // Ckeck if the user have URLs to show 
 const urlsForUser = function (id) {
   const userURLs = {};
-  let foundURL = false;
 
   for (const url in urlDatabase) {
     if (id === urlDatabase[url].userID) {
       userURLs[url] = urlDatabase[url];
-      foundURL = true;
     }
   }
 
-  if (!foundURL) {
+  if (Object.keys(userURLs).length === 0) {
     return "Start creating your short URLs!";
   }
 

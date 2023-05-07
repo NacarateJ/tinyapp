@@ -60,22 +60,22 @@ const urlDatabase = {
 };
 
 // Object to store users
-// All passwords = 1234
+// All passwords/ hash = 1234
 const users = {
   FV0qwV: {
     id: "FV0qwV",
     email: "user@example.com",
-    password: "$2a$10$.5UR8Og.2kSQ8xx6Pr9Vx.smflmQ0imqxodRtusY3NkdfdCg1OdPy",
+    hash: "$2a$10$.5UR8Og.2kSQ8xx6Pr9Vx.smflmQ0imqxodRtusY3NkdfdCg1OdPy",
   },
   N7Porb: {
     id: "N7Porb",
     email: "user2@example.com",
-    password: "$2a$10$Y8li1knP1lcFGjp7cyqbiufndJ1xijUoZo3x7Pcy79AYajZ0jMMtG",
+    hash: "$2a$10$Y8li1knP1lcFGjp7cyqbiufndJ1xijUoZo3x7Pcy79AYajZ0jMMtG",
   },
   dYNYhU: {
     id: "dYNYhU",
     email: "user3@example.com",
-    password: "$2a$10$XmdpBeNUrd7XqLHJncCsf.FvfniRSylby.gaVpN7tDj67pr0z0qLu",
+    hash: "$2a$10$XmdpBeNUrd7XqLHJncCsf.FvfniRSylby.gaVpN7tDj67pr0z0qLu",
   },
 };
 
@@ -166,7 +166,7 @@ app.post("/login", (req, res) => {
   }
 
   // Compare ecrypted password
-  const passwordMatch = bcrypt.compareSync(password, user["password"]); // true || false
+  const passwordMatch = bcrypt.compareSync(password, user["hash"]); // true || false
 
   // if the login inf. matches a existing user
   if (user["email"] === email && passwordMatch) {

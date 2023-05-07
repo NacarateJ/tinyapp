@@ -190,7 +190,7 @@ app.get("/urls", (req, res) => {
 
   const user = users[userID];
 
-  const userURLs = urlsForUser(userID);
+  const userURLs = urlsForUser(userID, urlDatabase);
 
   if (user) {
     // We need to send the variables to the EJS template

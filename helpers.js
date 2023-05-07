@@ -26,7 +26,7 @@ const getUserByEmail = function (email, usersDatabase) {
 };
 
 // Ckeck if the user have URLs to show 
-const urlsForUser = function (id) {
+const urlsForUser = function (id, urlDatabase) {
   const userURLs = {};
 
   for (const url in urlDatabase) {

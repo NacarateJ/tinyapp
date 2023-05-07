@@ -3,7 +3,7 @@
 /////////////////////////////////////////////////////////////////////
 
 // Func to return 6 random alphanumeric characters
-const generateRandomString = function (length) {
+const generateRandomString = function(length) {
   let result = "";
   const characters =
     "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
@@ -14,7 +14,7 @@ const generateRandomString = function (length) {
 };
 
 // Helper function to check for existing users email
-const getUserByEmail = function (email, usersDatabase) {
+const getUserByEmail = function(email, usersDatabase) {
   for (const userID in usersDatabase) {
     if (email === usersDatabase[userID].email) {
       // Returns the specific user object
@@ -25,8 +25,8 @@ const getUserByEmail = function (email, usersDatabase) {
   return undefined;
 };
 
-// Ckeck if the user have URLs to show 
-const urlsForUser = function (id, urlDatabase) {
+// Ckeck if the user have URLs to show
+const urlsForUser = function(id, urlDatabase) {
   const userURLs = {};
 
   for (const url in urlDatabase) {

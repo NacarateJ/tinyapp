@@ -248,10 +248,10 @@ app.post("/urls", (req, res) => {
     const newID = generateRandomString(6);
 
     // Add new id (shortURL)-longURL key-value pairs to DB
-      urlDatabase[newID] = {
-        longURL: newURL,
-        userID: userID,
-      };
+    urlDatabase[newID] = {
+      longURL: newURL,
+      userID: userID,
+    };
 
     // Use the NEW route to show/view the URL created
     res.redirect(`/urls/${newID}`);

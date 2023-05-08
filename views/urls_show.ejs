@@ -32,13 +32,16 @@
       <h1>Edit</h1>
 
       <form method="POST" action="/urls/<%= id %>">
-        
-        <label>
-          New URL:
-          <input type="text" name="longURL">
-        </label>
-
-        <button type="submit">Submit</button>
+        <div class="form-group mb-2">
+          <label>New URL:</label>
+            <input
+            class="form-control text-center mx-auto"
+            style="width: 30%;"
+            type="text" 
+            name="longURL"
+            />
+          <button type="submit" class="btn btn-primary mt-3">Submit</button>
+        </div>
       </form>
 
     </div>

@@ -18,17 +18,17 @@
     </div>
 
     <% if (user && user["email"]) { %>
+      <p class="font-weight-bold text-dark mt-3">Logged In As: <%= user["email"] %>!</p>
       <div class="navbar-form">
         <form method="POST" action="/logout">
-          <p class="navbar-text">Logged In As: <%= user["email"] %>!</p>
-          <button type="submit">Logout</button>
+          <button type="submit" class="btn btn-outline-dark ml-2">Logout</button>
         </form>
       </div>
     <% } else { %>
-      <nav class="navbar-links">
-        <a class="navbar-registration" href="/register">Register</a>
-        <a class="navbar-login" href="/login">Login</a>
-      </nav>
+       <div class="navbar-nav">
+        <a class="nav-item nav-link" href="/login">Login</a>
+        <a class="nav-item nav-link" href="/register">Register</a>
+      </div>
     <% } %>
     
 

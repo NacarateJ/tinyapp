@@ -40,7 +40,7 @@
           <tbody>
             <% for (let id in userURLs) { %>
               <tr>
-                <td><%= id %></td>
+                <td><a href="/u/<%= id %>"><%= id %></a></td>
                 <td><%= userURLs[id].longURL %></td>
                   <td class="text-right">
                   <form method="GET" action="/urls/<%= id %>">

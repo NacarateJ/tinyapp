@@ -150,6 +150,18 @@ app.post("/login", (req, res) => {
 // Routes - URLs
 /////////////////////////////////////////////////////////////////////
 
+app.get("/", (req, res) => {
+  const userID = req.session.user_id;
+
+  const user = users[userID];
+
+  if (user) {
+    return res.redirect("/urls");
+  }
+
+  return res.redirect("/login");
+})
+
 // Route handler for all "/urls"
 app.get("/urls", (req, res) => {
   const userID = req.session.user_id;

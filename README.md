@@ -44,12 +44,11 @@ TinyApp is a full stack web application built with Node and Express that allows 
 
 ## Final Product
 
-URLs page fo a user that just signed up or didn't creat any shor URL yet:
-!["URLs page fo a user that just signed up or didn't creat any shor URL yet"](https://github.com/NacarateJ/tinyapp/blob/master/docs/urls-page.png?raw=true)
+<div align="center">
 
-URLs page for a user that owns a few URLs:
-!["URLs page for a user that owns a few URLs"](https://github.com/NacarateJ/tinyapp/blob/master/docs/urls-page2.png?raw=true)
+https://user-images.githubusercontent.com/114256348/237000694-f7a0e077-5ac4-4d6d-b084-532a2fa03198.mp4
 
-Edit URL page:
-!["Edit URL page"](https://github.com/NacarateJ/tinyapp/blob/master/docs/edit-page.png?raw=true)
+<div/>
+
+
 

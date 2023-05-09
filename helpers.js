@@ -48,7 +48,9 @@ const urlsForUser = function (id, urlDatabase) {
 const checkWebsiteExists = (url, cb) => {
   request.get(url, (err, resp) => {
     if (err || resp.statusCode !== 200) {
-      return cb("Please provide a valid URL.");
+      return cb(
+        "<script>alert('Please provide a valid URL.'); history.go(-1);</script>"
+      );
     }
     cb(null);
   });

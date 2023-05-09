@@ -7,13 +7,13 @@ const {
   getUserByEmail,
   generateRandomString,
   urlsForUser,
+  checkWebsiteExists,
 } = require("./helpers");
 
 const {urlDatabase, users} = require("./database");
 
 // NPM packages
 const express = require("express");
-const request = require("request");
 const bcrypt = require("bcryptjs");
 const cookieSession = require("cookie-session");
 
@@ -216,12 +216,11 @@ app.post("/urls", (req, res) => {
   const newURL = req.body.longURL;
 
   // Check if the website exists or is accessible
-  request.get(newURL, (err, response) => {
-    if (err || response.statusCode !== 200) {
-      // If website does not exist or is not accessible,
-      // send error
-      return res.send("Please provide a valid URL.");
+  checkWebsiteExists(newURL, (err) => {
+    if (err) {
+      return res.status(404).send(err);
     }
+
     // New id (shortURL)
     const newID = generateRandomString(6);
 
@@ -231,7 +230,7 @@ app.post("/urls", (req, res) => {
       userID: userID,
     };
 
-    // Use the NEW route to show/view the URL created
+    // Redirect to the new short URL page
     res.redirect(`/urls/${newID}`);
   });
 });

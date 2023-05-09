@@ -72,13 +72,19 @@ app.post("/register", (req, res) => {
   const password = req.body.password;
 
   if (!email || !password) {
-    return res.status(400).send("Please provide a valid email and password.");
+    return res
+      .status(400)
+      .send(
+        "<script>alert('Please provide a valid email and password.'); history.go(-1);</script>"
+      );
   }
 
   const findEmail = getUserByEmail(email, users);
 
   if (findEmail) {
-    return res.status(400).send("Email already exist.");
+    return res
+      .status(400)
+      .send("<script>alert('Email already exist.'); history.go(-1);</script>");
   }
 
   const id = generateRandomString(6);
@@ -121,14 +127,22 @@ app.post("/login", (req, res) => {
   const password = req.body.password;
 
   if (!email || !password) {
-    return res.status(400).send("Please provide a valid email and password.");
+    return res
+      .status(400)
+      .send(
+        "<script>alert('Please provide a valid email and password.'); history.go(-1);</script>"
+      );
   }
 
   const user = getUserByEmail(email, users);
 
   // If there is no match
   if (!user) {
-    return res.status(403).send("No user found with that email.");
+    return res
+      .status(403)
+      .send(
+        "<script>alert('No user found with that email.'); history.go(-1);</script>"
+      );
   }
 
   // Compare ecrypted password
@@ -142,7 +156,11 @@ app.post("/login", (req, res) => {
   }
 
   if (passwordMatch === false) {
-    return res.status(400).send("Password does not match.");
+    return res
+      .status(400)
+      .send(
+        "<script>alert('Password does not match.'); history.go(-1);</script>"
+      );
   }
 });
 
@@ -182,7 +200,11 @@ app.get("/urls", (req, res) => {
     
     res.render("urls_index", templateVars);
   } else {
-    return res.status(400).send("Please login or register.");
+    return res
+      .status(400)
+      .send(
+        "<script>alert('Please login or register.'); history.go(-1);</script>"
+      );
   }
 });
 
@@ -210,7 +232,9 @@ app.post("/urls", (req, res) => {
   const user = users[userID];
 
   if (!user) {
-    return res.send("Please login or register to create short URLs.");
+    return res.send(
+      "<script>alert('Please login or register to create short URLs.'); history.go(-1);</script>"
+    );
   }
 
   const newURL = req.body.longURL;
@@ -242,17 +266,23 @@ app.get("/u/:id", (req, res) => {
   const user = users[userID];
 
   if (!user) {
-    return res.send("Please login or register start creating short URLs.");
+    return res.send(
+      "<script>alert('Please login or register to create short URLs.'); history.go(-1);</script>"
+    );
   }
 
   // Error if the user requests a short URL with a non-existant id
   if (!urlDatabase[id]) {
-    return res.status(404).send("URL not found");
+    return res
+      .status(404)
+      .send("<script>alert('URL not found'); history.go(-1);</script>");
   }
 
   // Only the owner of the URL can access it
   if (urlDatabase[id].userID !== userID) {
-    return res.send("Access denied.");
+    return res.send(
+      "<script>alert('Access denied.'); history.go(-1);</script>"
+    );
   }
 
   const longURL = urlDatabase[id].longURL;
@@ -268,17 +298,23 @@ app.get("/urls/:id", (req, res) => {
   const user = users[userID];
 
   if (!user) {
-    return res.send("Please login or register start creating short URLs.");
+    return res.send(
+      "<script>alert('Please login or register start creating short URLs.'); history.go(-1);</script>"
+    );
   }
 
   // Error if the user requests a short URL with a non-existant id
   if (!urlDatabase[id]) {
-    return res.status(404).send("URL not found");
+    return res
+      .status(404)
+      .send("<script>alert('URL not found.'); history.go(-1);</script>");
   }
 
   // Only the owner of the URL can access it
   if (urlDatabase[id].userID !== userID) {
-    return res.send("Access denied.");
+    return res.send(
+      "<script>alert('Access denied.'); history.go(-1);</script>"
+    );
   }
 
   const longURL = urlDatabase[id].longURL;
@@ -301,17 +337,23 @@ app.post("/urls/:id", (req, res) => {
 
   // Check if the user is logged in
   if (!user) {
-    return res.status(401).send("Unauthorized");
+    return res
+      .status(401)
+      .send("<script>alert('Unauthorized.'); history.go(-1);</script>");
   }
 
   // Check if the URL ID exists in the database
   if (!urlDatabase[id]) {
-    return res.status(404).send("URL not found");
+    return res
+      .status(404)
+      .send("<script>alert('URL not found.'); history.go(-1);</script>");
   }
 
   // Check if the user is the owner of the URL
   if (urlDatabase[id].userID !== userID) {
-    return res.status(401).send("Unauthorized");
+    return res
+      .status(401)
+      .send("<script>alert('Unauthorized.'); history.go(-1);</script>");
   }
 
   // Check if the website exists or is accessible
@@ -335,17 +377,23 @@ app.post("/urls/:id/delete", (req, res) => {
 
   // Check if the user is logged in
   if (!user) {
-    return res.status(401).send("Unauthorized");
+    return res
+      .status(401)
+      .send("<script>alert('Unauthorized.'); history.go(-1);</script>");
   }
 
   // Check if the URL ID exists in the database
   if (!urlDatabase[id]) {
-    return res.status(404).send("URL not found");
+    return res
+      .status(404)
+      .send("<script>alert('URL not found.'); history.go(-1);</script>");
   }
 
   // Check if the user is the owner of the URL
   if (urlDatabase[id].userID !== userID) {
-    return res.status(401).send("Unauthorized");
+    return res
+      .status(401)
+      .send("<script>alert('Unauthorized.'); history.go(-1);</script>");
   }
 
   // The delete operator removes a property from an object

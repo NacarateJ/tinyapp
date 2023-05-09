@@ -238,13 +238,29 @@ app.post("/urls", (req, res) => {
 
 // Redirect user to the appropriate longURL site
 app.get("/u/:id", (req, res) => {
-  const longURL = urlDatabase[req.params.id].longURL;
+  const id = req.params.id;
+  const userID = req.session.user_id;
+  const user = users[userID];
+
+  if (!user) {
+    return res.send("Please login or register start creating short URLs.");
+  }
+
   // Error if the user requests a short URL with a non-existant id
-  if (!longURL) {
+  if (!urlDatabase[id]) {
     return res.status(404).send("URL not found");
   }
+
+  // Only the owner of the URL can access it
+  if (urlDatabase[id].userID !== userID) {
+    return res.send("Access denied.");
+  }
+
+  const longURL = urlDatabase[id].longURL;
+
   res.redirect(longURL);
 });
+
 
 // Render/ show information about a single URL
 app.get("/urls/:id", (req, res) => {

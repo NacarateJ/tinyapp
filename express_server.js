@@ -314,11 +314,17 @@ app.post("/urls/:id", (req, res) => {
     return res.status(401).send("Unauthorized");
   }
 
-  // Update URL in DB
-  urlDatabase[id].longURL = updatedUrl;
+  // Check if the website exists or is accessible
+  checkWebsiteExists(updatedUrl, (err) => {
+    if (err) {
+      return res.status(400).send(err);
+    }
 
-  // Use the NEW route to show/view the URL created
-  res.redirect("/urls");
+    // Update URL in DB
+    urlDatabase[id].longURL = updatedUrl;
+
+    res.redirect("/urls");
+  });
 });
 
 // Delete URL

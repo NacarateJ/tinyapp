@@ -1,9 +1,11 @@
+const request = require("request");
+
 /////////////////////////////////////////////////////////////////////
 // Helper Functions
 /////////////////////////////////////////////////////////////////////
 
 // Func to return 6 random alphanumeric characters
-const generateRandomString = function(length) {
+const generateRandomString = function (length) {
   let result = "";
   const characters =
     "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
@@ -14,7 +16,7 @@ const generateRandomString = function(length) {
 };
 
 // Helper function to check for existing users email
-const getUserByEmail = function(email, usersDatabase) {
+const getUserByEmail = function (email, usersDatabase) {
   for (const userID in usersDatabase) {
     if (email === usersDatabase[userID].email) {
       // Returns the specific user object
@@ -26,7 +28,7 @@ const getUserByEmail = function(email, usersDatabase) {
 };
 
 // Ckeck if the user have URLs to show
-const urlsForUser = function(id, urlDatabase) {
+const urlsForUser = function (id, urlDatabase) {
   const userURLs = {};
 
   for (const url in urlDatabase) {
@@ -42,8 +44,19 @@ const urlsForUser = function(id, urlDatabase) {
   return userURLs;
 };
 
+// Check if the website exists or is accessible
+const checkWebsiteExists = (url, cb) => {
+  request.get(url, (err, resp) => {
+    if (err || resp.statusCode !== 200) {
+      return cb("Please provide a valid URL.");
+    }
+    cb(null);
+  });
+};
+
 module.exports = {
   getUserByEmail,
   generateRandomString,
-  urlsForUser
+  urlsForUser,
+  checkWebsiteExists,
 };

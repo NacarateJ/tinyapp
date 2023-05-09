@@ -272,16 +272,17 @@ app.get("/urls/:id", (req, res) => {
     return res.send("Please login or register start creating short URLs.");
   }
 
+  // Error if the user requests a short URL with a non-existant id
+  if (!urlDatabase[id]) {
+    return res.status(404).send("URL not found");
+  }
+
   // Only the owner of the URL can access it
   if (urlDatabase[id].userID !== userID) {
     return res.send("Access denied.");
   }
 
   const longURL = urlDatabase[id].longURL;
-  // Error if the user requests a short URL with a non-existant id
-  if (!longURL) {
-    return res.status(404).send("URL not found");
-  }
 
   const templateVars = {
     user,

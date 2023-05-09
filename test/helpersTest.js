@@ -1,9 +1,11 @@
 const { assert } = require("chai");
+const request = require("request");
 
 const {
   generateRandomString,
   getUserByEmail,
   urlsForUser,
+  checkWebsiteExists,
 } = require("../helpers.js");
 
 /////////////////////////////////////////////////////////////////////
@@ -83,5 +85,27 @@ describe("urlsForUser", function () {
     const result = urlsForUser("user3", testUrlDatabase);
     const expected = "Start creating your short URLs!";
     assert.deepEqual(result, expected);
+  });
+});
+
+/////////////////////////////////////////////////////////////////////
+// Tests for checkWebsiteExists
+/////////////////////////////////////////////////////////////////////
+
+describe("checkWebsiteExists", function() {
+  it("should return an error message for an invalid URL", function(done) {
+    const url = "invalidurl";
+    checkWebsiteExists(url, function(err) {
+      assert.strictEqual(err, "Please provide a valid URL.");
+      done();
+    });
+  });
+
+  it("should not return an error message for a valid URL", function(done) {
+    const url = "https://www.google.com";
+    checkWebsiteExists(url, function(err) {
+      assert.isNull(err);
+      done();
+    });
   });
 });

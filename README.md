@@ -1,21 +1,19 @@
 # TinyApp Project
 
-TinyApp is a full stack web application built with Node and Express that allows users to shorten long URLs. This project was created as part of a web development course and serves as a demonstration of building a simple CRUD (Create, Read, Update, Delete) application.
+TinyApp is a multipage full stack web application with authentication protection that reacts appropriately to the user's logged-in state. It was built with Node and Express and allows registered users to create a shortened URL. Once logged in, they can access their dashboard where they can view, create, edit and delete their shortened URLs. The application provides feedback to the user based on their logged-in state, directing them to the appropriate page for their action.
+
+This project was created as part of a web development course and serves as a demonstration of building a simple CRUD (Create, Read, Update, Delete) application with user's with authentication protection.
 
 ## Features
 
-- Users must register to create a shortened URL.
-- Users can create a shortened version of a long URL.
-- Users can view a list of their shortened URLs.
-- Users can edit the long URL associated with their shortened URL.
-- Users can delete a shortened URL from their list.
+- Users can view, create, edit and delete their shortened URLs.
 - Passwords are hashed using `bcryptjs` for security.
 - User sessions are maintained using `cookie-session`.
 - `EJS` is used as a template engine to render dynamic content on the client-side.
 - `request` is used to make `HTTP` requests to external `APIs`.
 - The development environment includes `Chai` and `Mocha` for testing.
 
-## Technologies Used
+## Technologies
 
 - [Node.js](https://nodejs.org/en)
 - [Express](https://expressjs.com/)

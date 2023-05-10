@@ -2,15 +2,16 @@
 
 TinyApp is a multipage full stack web application with authentication protection that reacts appropriately to the user's logged-in state. It was built with Node and Express and allows registered users to create a shortened URL. Once logged in, they can access their dashboard where they can view, create, edit and delete their shortened URLs. The application provides feedback to the user based on their logged-in state, directing them to the appropriate page for their action.
 
-This project was created as part of a web development course and serves as a demonstration of building a simple CRUD (Create, Read, Update, Delete) application with user's with authentication protection.
+This project was created as part of a web development course and serves as a demonstration of building a simple CRUD (Create, Read, Update, Delete) application with user's authentication protection.
 
 ## Features
 
-- Users can view, create, edit and delete their shortened URLs.
+- Registered users can view, create, edit and delete their shortened URLs.
+- Unregistered users only have access to *register* and *login* pages.
 - Passwords are hashed using `bcryptjs` for security.
 - User sessions are maintained using `cookie-session`.
 - `EJS` is used as a template engine to render dynamic content on the client-side.
-- `request` is used to make `HTTP` requests to external `APIs`.
+- `request` is used to make `HTTP` requests to external `APIs` to check whether a website exists and is accessible before creating or updating a shortened URL.
 - The development environment includes `Chai` and `Mocha` for testing.
 
 ## Technologies
